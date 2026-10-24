@@ -56,3 +56,9 @@ Run `npm run build` and serve the `dist/` folder on any static host (Netlify, Ve
 ## Privacy
 
 QR codes are generated locally in your browser. Nothing is uploaded or stored.
+
+## GitHub Pages
+
+A workflow in `.github/workflows/deploy.yml` builds and deploys the app on every push to `main`. One-time setup: in the repo go to **Settings → Pages → Build and deployment → Source** and choose **GitHub Actions**.
+
+Live site: https://abdullohkariev.github.io/qrcode-generator/
