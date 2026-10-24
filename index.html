@@ -1,12 +1,134 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>QR Code Generator</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Code Generator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 p-4">
+  <div class="max-w-4xl mx-auto">
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl mb-4">
+        <svg class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/></svg>
+      </div>
+      <h1 class="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-2">QR Code Generator</h1>
+      <p class="text-gray-600 text-lg">Generate QR codes for URLs, text, and contact information</p>
+    </div>
+
+    <div class="bg-white rounded-3xl shadow-2xl overflow-hidden">
+      <!-- Tabs -->
+      <div class="border-b border-gray-200">
+        <nav class="flex" id="tabs">
+          <button data-tab="url" class="tab flex-1 flex items-center justify-center gap-2 px-6 py-4 text-sm font-medium transition-all duration-200">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>URL
+          </button>
+          <button data-tab="text" class="tab flex-1 flex items-center justify-center gap-2 px-6 py-4 text-sm font-medium transition-all duration-200">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Text
+          </button>
+          <button data-tab="contact" class="tab flex-1 flex items-center justify-center gap-2 px-6 py-4 text-sm font-medium transition-all duration-200">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Contact
+          </button>
+        </nav>
+      </div>
+
+      <div class="p-8">
+        <div class="grid lg:grid-cols-2 gap-8">
+          <!-- Inputs -->
+          <div class="space-y-6">
+            <h2 id="form-title" class="text-2xl font-semibold text-gray-800 mb-4">Enter URL</h2>
+
+            <div id="panel-url">
+              <label for="url" class="block text-sm font-medium text-gray-700 mb-2">Website URL</label>
+              <input id="url" type="url" placeholder="example.com or https://example.com" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200">
+              <p class="text-xs text-gray-500 mt-1">Enter a website URL. If you don't include http://, we'll add https:// automatically.</p>
+            </div>
+
+            <div id="panel-text" hidden>
+              <label for="text" class="block text-sm font-medium text-gray-700 mb-2">Text Content</label>
+              <textarea id="text" rows="4" placeholder="Enter any text to generate QR code..." class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 resize-none"></textarea>
+            </div>
+
+            <div id="panel-contact" hidden class="space-y-4">
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label for="firstName" class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+                  <input id="firstName" type="text" placeholder="John" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200">
+                </div>
+                <div>
+                  <label for="lastName" class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+                  <input id="lastName" type="text" placeholder="Doe" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200">
+                </div>
+              </div>
+              <div>
+                <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                <input id="phone" type="tel" placeholder="+1 (555) 123-4567" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200">
+              </div>
+              <div>
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                <input id="email" type="email" placeholder="john.doe@example.com" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200">
+              </div>
+              <div>
+                <label for="organization" class="block text-sm font-medium text-gray-700 mb-2">Organization</label>
+                <input id="organization" type="text" placeholder="Company Name" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200">
+              </div>
+              <div>
+                <label for="website" class="block text-sm font-medium text-gray-700 mb-2">Website</label>
+                <input id="website" type="url" placeholder="https://example.com" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200">
+              </div>
+            </div>
+
+            <button id="clear" class="w-full px-6 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-all duration-200 font-medium">Clear All Fields</button>
+          </div>
+
+          <!-- Result -->
+          <div class="flex flex-col items-center space-y-6">
+            <h2 class="text-2xl font-semibold text-gray-800">Generated QR Code</h2>
+
+            <div class="bg-gray-50 rounded-2xl p-8 w-full max-w-sm">
+              <div id="result" class="text-center" hidden>
+                <div class="flex justify-center">
+                  <canvas id="qr" class="w-full h-auto rounded-xl shadow-lg bg-white" style="max-width:300px"></canvas>
+                </div>
+                <p id="error" class="text-sm text-red-600 mt-2" hidden></p>
+                <p class="text-sm text-gray-600 mt-4">Scan this QR code with your device</p>
+              </div>
+              <div id="empty" class="text-center py-16">
+                <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/></svg>
+                <p class="text-gray-500">Fill in the form to generate your QR code</p>
+              </div>
+            </div>
+
+            <div id="actions" class="flex gap-3 w-full max-w-sm" hidden>
+              <button id="download" class="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl hover:from-purple-700 hover:to-blue-700 transition-all duration-200 font-medium shadow-lg">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>Download
+              </button>
+              <button id="copy" class="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-all duration-200 font-medium">
+                <svg id="copy-icon" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                <svg id="check-icon" class="w-4 h-4 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" hidden><path d="M20 6 9 17l-5-5"/></svg>
+                <span id="copy-label">Copy Data</span>
+              </button>
+            </div>
+
+            <div id="data-box" class="w-full max-w-sm" hidden>
+              <h3 class="text-sm font-medium text-gray-700 mb-2">QR Code Data:</h3>
+              <div class="bg-gray-100 rounded-lg p-3 text-xs text-gray-600 max-h-32 overflow-y-auto">
+                <pre id="data" class="whitespace-pre-wrap break-words"></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-8 text-gray-500 text-sm">
+      <p>Generate QR codes instantly • No data stored • Free to use</p>
+    </div>
+  </div>
+</div>
+
+<script src="qrious.min.js"></script>
+<script src="script.js"></script>
+</body>
 </html>
