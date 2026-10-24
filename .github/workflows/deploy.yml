@@ -22,7 +22,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - run: mkdir site && cp index.html style.css script.js qrious.min.js site/
+      - run: mkdir site && cp index.html style.css script.js qrious.min.js logo.svg site/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site

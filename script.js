@@ -5,8 +5,6 @@ var qr = null;
 var qrData = '';
 
 var titles = { url: 'Enter URL', text: 'Enter Text', contact: 'Contact Information' };
-var tabOn = ['text-purple-600', 'border-b-2', 'border-purple-600', 'bg-purple-50'];
-var tabOff = ['text-gray-500', 'hover:text-gray-700', 'hover:bg-gray-50'];
 
 function formatUrl(url) {
   url = url.trim();
@@ -65,8 +63,8 @@ function setTab(tab) {
   ['url', 'text', 'contact'].forEach(function (t) { $('panel-' + t).hidden = t !== tab; });
   document.querySelectorAll('.tab').forEach(function (b) {
     var on = b.dataset.tab === tab;
-    b.classList.remove.apply(b.classList, tabOn.concat(tabOff));
-    b.classList.add.apply(b.classList, on ? tabOn : tabOff);
+    b.classList.toggle('active', on);
+    b.setAttribute('aria-selected', on);
   });
   update();
 }
@@ -103,6 +101,14 @@ $('copy').addEventListener('click', function () {
       $('copy-label').textContent = 'Copy Data';
     }, 2000);
   }, function (err) { console.error('Failed to copy text: ', err); });
+});
+
+// Theme toggle
+$('theme-toggle').addEventListener('click', function () {
+  var root = document.documentElement;
+  var next = root.dataset.theme === 'light' ? 'dark' : 'light';
+  root.dataset.theme = next;
+  try { localStorage.setItem('theme', next); } catch (e) {}
 });
 
 setTab('url');
